@@ -1,2 +1,2 @@
 # blog-php
-This is a blog-project with php
+This is a php blog-project
