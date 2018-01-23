@@ -1,7 +1,10 @@
 <?php
+include("../init.php");
+?>
 
-require_once("../database.php");
-$res = fetch_posts()
+<?php
+$postsRepository = new App\Post\PostsRepository();
+$res = $postsRepository->fetchPosts();
 ?>
 
 <h1>Blog</h1>

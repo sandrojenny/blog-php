@@ -1,8 +1,11 @@
 <?php
+include("../init.php");
+?>
 
-require_once("../database.php");
+<?php
+$postsRepository = new App\Post\PostsRepository();
 $id = $_GET['id'];
-$post = fetch_post($id);
+$post = $postsRepository->fetchPost($id);
 ?>
 
 <h1><?php echo $post["title"]; ?></h1>
