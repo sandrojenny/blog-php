@@ -3,7 +3,7 @@ include("../init.php");
 ?>
 
 <?php
-$postsRepository = new App\Post\PostsRepository();
+$postsRepository = new App\Post\PostsRepository($pdo);
 $res = $postsRepository->fetchPosts();
 ?>
 
