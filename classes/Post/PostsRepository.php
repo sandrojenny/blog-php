@@ -17,13 +17,23 @@
     }
 
     public function fetchPosts(){
-      return $this->pdo->query("SELECT * FROM `posts`");
+      $stmt = $this->pdo->query("SELECT * FROM `posts`");
+
+      // Model (Return Value as a Class Object)
+      $posts = $stmt->fetchAll(PDO::FETCH_CLASS, "App\\Post\\PostModel");
+
+      return $posts;
     }
 
     public function fetchPost($id){
       $stmt = $this->pdo->prepare("SELECT * FROM `posts` WHERE id = :id");
       $stmt->execute(['id' => $id]);
-      return $stmt->fetch();
+
+      // Model (Return Value as a Class Object)
+      $stmt->setFetchMode(PDO::FETCH_CLASS, "App\\Post\\PostModel");
+      $post = $stmt->fetch();
+
+      return $post;
     }
   }
 
