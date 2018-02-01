@@ -7,39 +7,50 @@
   namespace App\Core;
 
   use PDO;
+  use App\Post\PostController;
   use App\Post\PostsRepository;
 
   class Container
   {
-    private $pdo;
-    private $postsRepository;
+    private $receipts = [];
+    private $instances = [];
 
-    public function getPdo()
-    {
-
-      if (!empty($this->pdo)) {
-        return $this->pdo;
-      } else {
-        $this->pdo = new PDO(
-          'mysql:host=localhost;dbname=udemyblog_;charset=utf8',
-          'root',
-          ''
-        );
-
-        $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        return $this->pdo;
-      }
+    public function __construct(){
+      $this->receipts = [
+        'postController' => function(){
+          return new PostController(
+            $this->make('postsRepository')
+          );
+        },
+        'postsRepository' => function(){
+          return new PostsRepository(
+            $this->make("pdo")
+          );
+        },
+        'pdo' => function(){
+          $pdo = new PDO(
+            'mysql:host=localhost;dbname=udemyblog_;charset=utf8',
+            'root',
+            ''
+          );
+          $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+          return $pdo;
+        }
+      ];
     }
 
-    public function getPostsRepository(){
+    public function make($name)
+    {
+      if (!empty($this->instances[$name]))
+      {
+        return $this->instances[$name];
+      }
 
-        if (!empty($this->postsRepository)) {
-          return $this->postsRepository;
-        } else {
+      if (isset($this->receipts[$name])) {
+        $this->instances[$name] = $this->receipts[$name]();
+      }
 
-          $this->postsRepository = new PostsRepository($this->getPdo());
-          return $this->postsRepository;
-        }
+      return $this->instances[$name];
     }
   }
 

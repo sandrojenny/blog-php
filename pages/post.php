@@ -3,7 +3,7 @@ include("../init.php");
 ?>
 
 <?php
-$postsRepository = $container->getPostsRepository();
+$postsRepository = $container->make('postsRepository');
 $id = $_GET['id'];
 $post = $postsRepository->fetchPost($id);
 ?>

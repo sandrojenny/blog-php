@@ -1,9 +1,13 @@
 <?php
 include("../init.php");
+
+  $postController = $container->make("postController");
+  $postController->index();
+
 ?>
 
 <?php
-$postsRepository = $container->getPostsRepository();
+$postsRepository = $container->make('postsRepository');
 $res = $postsRepository->fetchPosts();
 ?>
 
