@@ -1,12 +1,5 @@
 <?php
 include("../init.php");
+$postController = $container->make("postController");
+$postController->post();
 ?>
-
-<?php
-$postsRepository = $container->make('postsRepository');
-$id = $_GET['id'];
-$post = $postsRepository->fetchPost($id);
-?>
-
-<h1><?php echo $post['title']; ?></h1>
-<p><?php echo nl2br($post['content']); ?></p>
