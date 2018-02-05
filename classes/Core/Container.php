@@ -7,6 +7,7 @@
   namespace App\Core;
 
   use PDO;
+  use PDOException;
   use App\Post\PostController;
   use App\Post\PostsRepository;
 
@@ -28,11 +29,15 @@
           );
         },
         'pdo' => function(){
-          $pdo = new PDO(
-            'mysql:host=localhost;dbname=udemyblog_;charset=utf8',
-            'root',
-            ''
-          );
+          try { $pdo = new PDO(
+              'mysql:host=localhost;dbname=udemyblog_;charset=utf8',
+              'root',
+              ''
+            );
+          } catch(PDOException $e){
+            echo "Connection to the database failed";
+            die();
+          }
           $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
           return $pdo;
         }
