@@ -10,7 +10,7 @@ include("../init.php");
     ],
     '/post' => [
       'controller' => 'postController',
-      'method' => 'post'
+      'method' => 'show'
     ]
   ];
 

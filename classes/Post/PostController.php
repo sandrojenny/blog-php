@@ -11,8 +11,12 @@
   class PostController extends AbstractController
   {
 
-    public function __construct(PostsRepository $postsRepository){
+    public function __construct(
+      PostsRepository $postsRepository,
+      CommentsRepository $commentsRepository
+    ){
       $this->postsRepository = $postsRepository;
+      $this->commentsRepository = $commentsRepository;
     }
 
     public function index()
@@ -24,13 +28,24 @@
       ]);
     }
 
-    public function post()
+    public function show()
     {
-      $id = $_GET['id'];
-      $post = $this->postsRepository->find($id);
+      // Get the PostId
+      $postId = $_GET['id'];
 
-      $this->render("post/post", [
-        'post' => $post
+      // Insert Comment
+      if (isset($_POST['content'])) {
+        $content = $_POST['content'];
+        $this->commentsRepository->insertForPost($postId, $content);
+      }
+
+      // Show Content (Posts & Comments)
+      $post = $this->postsRepository->find($postId);
+      $comments = $this->commentsRepository->allByPost($postId);
+
+      $this->render("post/show", [
+        'post' => $post,
+        'comments' => $comments
       ]);
     }
   }

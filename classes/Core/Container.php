@@ -10,6 +10,7 @@
   use PDOException;
   use App\Post\PostController;
   use App\Post\PostsRepository;
+  use App\Post\CommentsRepository;
 
   class Container
   {
@@ -20,7 +21,13 @@
       $this->receipts = [
         'postController' => function(){
           return new PostController(
-            $this->make('postsRepository')
+            $this->make('postsRepository'),
+            $this->make('commentsRepository')
+          );
+        },
+        'commentsRepository' => function(){
+          return new CommentsRepository(
+            $this->make("pdo")
           );
         },
         'postsRepository' => function(){
